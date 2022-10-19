@@ -3,33 +3,31 @@ package com.example.viewpager_test
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.viewpager_test.databinding.RecyclerViewItemBinding
 
 class RecyclerAdapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
 
-    private val titles = arrayOf("1","2","3","4","5")
+    val plantList = listOf(1,2,3,4,5,6)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerAdapter.ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
-        return ViewHolder(v)
-    }
+    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val binding = RecyclerViewItemBinding.bind(itemView)
 
-    override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
-        holder.title.text = titles[position]
-    }
-
-    override fun getItemCount(): Int = 5
-
-    inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        var image: ImageView
-        var title: TextView
-
-        init {
-            image = itemView.findViewById(R.id.image)
-            title = itemView.findViewById(R.id.title)
+        fun bind(plant: Plant) = with(binding){
+            title.text = plant.title
         }
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_view_item, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(Plant(plantList[position].toString()))
+    }
+
+    override fun getItemCount(): Int {
+        return plantList.size
+    }
 }

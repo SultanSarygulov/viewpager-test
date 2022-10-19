@@ -4,25 +4,37 @@ import ViewPagerAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.viewpager_test.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_new.*
 
-class MainActivity : FragmentActivity() {
+class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: ViewPagerAdapter
-    private lateinit var viewPager2: ViewPager2
+    private lateinit var binding: ActivityMainBinding
+    private val adapter = RecyclerAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        init()
+        initial()
+    }
 
-        viewPager2 = findViewById(R.id.viewPager2)
-        viewPager2.adapter = adapter
+    private fun init(){
+        binding.apply {
+            recyclerview.layoutManager = LinearLayoutManager(this@MainActivity)
+            recyclerview.adapter = adapter
+        }
+    }
 
-        val recyclerView: RecyclerView = findViewById(R.id.recyclerview)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = RecyclerAdapter()
+    private fun initial(){
+        binding.viewPager.adapter = ViewPagerAdapter(this)
+        binding.tabLayout.tabIconTint = null
+
     }
 }
